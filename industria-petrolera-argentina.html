@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de la Industria Petrolera Argentina - Wolf Argy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background: #f8f9fa; }
+        
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+        }
+        
+        .company-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border-left: 4px solid transparent;
+            transition: all 0.2s;
+        }
+        
+        .company-card:hover {
+            border-left-color: #2563eb;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        
+        .company-card.major { border-left-color: #dc2626; }
+        .company-card.medium { border-left-color: #f59e0b; }
+        .company-card.independent { border-left-color: #10b981; }
+        
+        .category-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .stat-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .badge-exploration { background: #dbeafe; color: #1e40af; }
+        .badge-production { background: #fef3c7; color: #92400e; }
+        .badge-refining { background: #fee2e2; color: #991b1b; }
+        .badge-transport { background: #d1fae5; color: #065f46; }
+        .badge-services { background: #e0e7ff; color: #3730a3; }
+        
+        .section-header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+        }
+        
+        .pipeline-card {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pipeline-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="section-header">
+            <div class="flex justify-between items-center">
+                <div>
+                    <div class="text-sm font-semibold text-blue-200 mb-2">MAPA COMPLETO 2026</div>
+                    <h1 class="text-5xl font-black mb-2">Industria Petrolera Argentina</h1>
+                    <p class="text-xl text-blue-100">Vaca Muerta · Exploración · Producción · Refinación · Transporte</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-7xl font-black">⛽</div>
+                    <p class="text-blue-200 text-sm mt-2">+30 Empresas</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="info-card">
+                <div class="text-4xl mb-2">🛢️</div>
+                <div class="text-sm text-gray-600 mb-2">Producción Diaria</div>
+                <div class="text-4xl font-black text-blue-600">450K</div>
+                <div class="text-sm text-gray-500">barriles/día (Vaca Muerta)</div>
+            </div>
+
+            <div class="info-card">
+                <div class="text-4xl mb-2">💰</div>
+                <div class="text-sm text-gray-600 mb-2">Inversión 2025</div>
+                <div class="text-4xl font-black text-green-600">$11.2B</div>
+                <div class="text-sm text-gray-500">63% en Neuquén</div>
+            </div>
+
+            <div class="info-card">
+                <div class="text-4xl mb-2">🏗️</div>
+                <div class="text-sm text-gray-600 mb-2">Pozos 2025</div>
+                <div class="text-4xl font-black text-orange-600">1,075</div>
+                <div class="text-sm text-gray-500">+538 vs 2024</div>
+            </div>
+
+            <div class="info-card">
+                <div class="text-4xl mb-2">🚢</div>
+                <div class="text-sm text-gray-600 mb-2">Exportación</div>
+                <div class="text-4xl font-black text-purple-600">257K</div>
+                <div class="text-sm text-gray-500">barriles/día</div>
+            </div>
+        </div>
+
+        <!-- EXPLORACIÓN Y PRODUCCIÓN -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">🔍 EXPLORACIÓN Y PRODUCCIÓN</h2>
+                <p class="text-blue-100 text-sm">Empresas operadoras en Vaca Muerta y cuencas convencionales</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                
+                <!-- YPF -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">YPF</h3>
+                            <p class="text-xs text-gray-600">Estatal · Líder Nacional</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">61,114 m³/día (44.3%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inversión 2025:</span>
+                            <span class="font-bold">$4.589B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Proyección 2026:</span>
+                            <span class="font-bold text-green-600">$6.0B (+20%)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Loma Campana · Bandurria Sur · La Amarga Chica</p>
+                    </div>
+                </div>
+
+                <!-- PAE -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">PAE</h3>
+                            <p class="text-xs text-gray-600">Pan American Energy · BP + Bridas</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">16,815 m³/día (12.2%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inversión 2025:</span>
+                            <span class="font-bold">$1.417B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Pozos:</span>
+                            <span class="font-bold">4,450+ activos</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Cerro Dragón · Lindero Atravesado · Golfo San Jorge</p>
+                    </div>
+                </div>
+
+                <!-- Vista Energy -->
+                <div class="company-card medium">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Vista Energy</h3>
+                            <p class="text-xs text-gray-600">Independiente Argentina</p>
+                        </div>
+                        <span class="stat-badge badge-exploration">Exploración</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">11,073 m³/día (8%)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inversión 2025:</span>
+                            <span class="font-bold">$1.178B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Joint Venture:</span>
+                            <span class="font-bold">Trafigura ($150M)</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Bajada del Palo Oeste/Este · Aguada Federal</p>
+                    </div>
+                </div>
+
+                <!-- Chevron -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Chevron Argentina</h3>
+                            <p class="text-xs text-gray-600">Supermajor · USA</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">3,631 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Área:</span>
+                            <span class="font-bold">111,000 acres</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socio en:</span>
+                            <span class="font-bold">VMOS Pipeline</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">El Trapial Este · Loma Campana (JV con YPF) · Narambuena</p>
+                    </div>
+                </div>
+
+                <!-- Shell -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Shell Argentina</h3>
+                            <p class="text-xs text-gray-600">Supermajor · UK/Netherlands</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">5,370 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Participación:</span>
+                            <span class="font-bold">24.5% Bandurria Sur</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socio en:</span>
+                            <span class="font-bold">VMOS Pipeline</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Cruz de Lorena · Sierras Blancas · La Escalonada (45%)</p>
+                    </div>
+                </div>
+
+                <!-- Pluspetrol -->
+                <div class="company-card medium">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Pluspetrol</h3>
+                            <p class="text-xs text-gray-600">Independiente Argentina</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">6,315 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Adquisición:</span>
+                            <span class="font-bold">ExxonMobil (2024)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socio en:</span>
+                            <span class="font-bold">VMOS Pipeline</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">La Calera · Bajo del Choique · Los Toldos I Sur</p>
+                    </div>
+                </div>
+
+                <!-- TotalEnergies -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">TotalEnergies</h3>
+                            <p class="text-xs text-gray-600">Supermajor · Francia</p>
+                        </div>
+                        <span class="stat-badge badge-exploration">Exploración</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Proyecto Fenix:</span>
+                            <span class="font-bold">$706M FID (2022)</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Participación:</span>
+                            <span class="font-bold">37.5% Fenix Gas</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inicio:</span>
+                            <span class="font-bold text-green-600">2025</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Ubicación:</p>
+                        <p class="text-xs text-gray-600">60 km offshore Tierra del Fuego</p>
+                    </div>
+                </div>
+
+                <!-- Tecpetrol -->
+                <div class="company-card medium">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Tecpetrol</h3>
+                            <p class="text-xs text-gray-600">Grupo Techint · Argentina</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Especialidad:</span>
+                            <span class="font-bold">Gas No Convencional</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socio en:</span>
+                            <span class="font-bold">VMOS Pipeline</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Cuenca:</span>
+                            <span class="font-bold">Neuquén</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Fortín de Piedra · Vaca Muerta Gas</p>
+                    </div>
+                </div>
+
+                <!-- Pampa Energía -->
+                <div class="company-card medium">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Pampa Energía</h3>
+                            <p class="text-xs text-gray-600">Integrada Argentina</p>
+                        </div>
+                        <span class="stat-badge badge-production">Producción</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Producción:</span>
+                            <span class="font-bold">3,397 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inversión 2025:</span>
+                            <span class="font-bold">Significativa</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socio en:</span>
+                            <span class="font-bold">VMOS Pipeline</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs font-semibold text-gray-700 mb-1">Bloques Principales:</p>
+                        <p class="text-xs text-gray-600">Rincón de Aranda · Sierra Chata</p>
+                    </div>
+                </div>
+
+                <!-- Otras empresas producción -->
+                <div class="company-card independent">
+                    <h3 class="text-lg font-black text-gray-900 mb-3">Otras Productoras</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Petrolera El Trébol:</span>
+                            <span class="font-bold">2,962 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">CGC Energía:</span>
+                            <span class="font-bold">2,704 m³/día</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Petróleos Sudamericanos:</span>
+                            <span class="font-bold">2,628 m³/día</span>
+                        </div>
+                    </div>
+                    <div class="mt-3 pt-3 border-t border-gray-100">
+                        <p class="text-xs text-gray-600">Productores medianos y pequeños en cuencas convencionales</p>
+                    </div>
+                </div>
+
+                <!-- Equinor -->
+                <div class="company-card major">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">Equinor</h3>
+                            <p class="text-xs text-gray-600">Supermajor · Noruega</p>
+                        </div>
+                        <span class="stat-badge badge-exploration">Exploración</span>
+                    </div>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Estado:</span>
+                            <span class="font-bold">Exploración</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Foco:</span>
+                            <span class="font-bold">Offshore Argentina</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ExxonMobil (histórico) -->
+                <div class="company-card major" style="opacity: 0.6;">
+                    <div class="flex items-start justify-between mb-3">
+                        <div>
+                            <h3 class="text-lg font-black text-gray-900">ExxonMobil</h3>
+                            <p class="text-xs text-gray-600">Supermajor · USA</p>
+                        </div>
+                        <span class="stat-badge" style="background: #fee2e2; color: #991b1b;">Vendido</span>
+                    </div>
+                    <div class="text-sm text-gray-600">
+                        <p class="mb-2">Activos vendidos a Pluspetrol en Dic 2024</p>
+                        <p class="text-xs">Bajo del Choique · Los Toldos · Pampa de las Yeguas</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TRANSPORTE E INFRAESTRUCTURA -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">🚇 TRANSPORTE E INFRAESTRUCTURA</h2>
+                <p class="text-blue-100 text-sm">Oleoductos, gasoductos y terminales de exportación</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- VMOS Pipeline -->
+                <div class="info-card pipeline-card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900">VMOS Pipeline</h3>
+                            <p class="text-sm text-gray-600">Vaca Muerta Oil Sur</p>
+                        </div>
+                        <span class="text-3xl">🛢️</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-xs text-gray-600">Longitud</p>
+                            <p class="text-2xl font-bold text-blue-600">437 km</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Capacidad Inicial</p>
+                            <p class="text-2xl font-bold text-green-600">180K bpd</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Cap. Expandida</p>
+                            <p class="text-2xl font-bold text-orange-600">700K bpd</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Operación</p>
+                            <p class="text-2xl font-bold text-purple-600">Q4 2026</p>
+                        </div>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg mb-3">
+                        <p class="text-sm font-semibold text-blue-900 mb-2">Consorcio (7 empresas):</p>
+                        <p class="text-xs text-blue-800">YPF · PAE · Vista · Pampa · Chevron · Pluspetrol · Shell</p>
+                    </div>
+                    <div class="text-sm space-y-1">
+                        <p><strong>Inversión:</strong> $3.0B ($2.0B financiado)</p>
+                        <p><strong>Ruta:</strong> Loma Campana → Allen → Punta Colorada</p>
+                        <p><strong>Bancos:</strong> Citi, Deutsche, Santander, JP Morgan, Itaú +14</p>
+                    </div>
+                </div>
+
+                <!-- Gasoducto Perito Moreno -->
+                <div class="info-card pipeline-card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900">Gasoducto Perito Moreno</h3>
+                            <p class="text-sm text-gray-600">Gas Natural</p>
+                        </div>
+                        <span class="text-3xl">⛽</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-xs text-gray-600">Capacidad Adicional</p>
+                            <p class="text-2xl font-bold text-green-600">35 MMm³/día</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Destino</p>
+                            <p class="text-lg font-bold text-blue-600">Exportación</p>
+                        </div>
+                    </div>
+                    <div class="text-sm space-y-1">
+                        <p><strong>Objetivo:</strong> Exportar gas a países vecinos</p>
+                        <p><strong>Origen:</strong> Vaca Muerta (Neuquén)</p>
+                    </div>
+                </div>
+
+                <!-- Oldelval -->
+                <div class="info-card pipeline-card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900">Oldelval</h3>
+                            <p class="text-sm text-gray-600">Oleoducto del Valle</p>
+                        </div>
+                        <span class="text-3xl">🔵</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-xs text-gray-600">Capacidad 2025</p>
+                            <p class="text-2xl font-bold text-blue-600">1.25M bpd</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Operador</p>
+                            <p class="text-lg font-bold text-gray-900">YPF</p>
+                        </div>
+                    </div>
+                    <div class="text-sm space-y-1">
+                        <p><strong>Expansión:</strong> Tratayén → Allen (primera sección)</p>
+                        <p><strong>Participación:</strong> Compartida con múltiples operadores</p>
+                    </div>
+                </div>
+
+                <!-- Terminal Punta Colorada -->
+                <div class="info-card pipeline-card">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-xl font-black text-gray-900">Terminal Punta Colorada</h3>
+                            <p class="text-sm text-gray-600">Puerto de Exportación</p>
+                        </div>
+                        <span class="text-3xl">🚢</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <p class="text-xs text-gray-600">Almacenamiento</p>
+                            <p class="text-2xl font-bold text-blue-600">2M bbl</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Buques</p>
+                            <p class="text-lg font-bold text-green-600">VLCC</p>
+                        </div>
+                    </div>
+                    <div class="bg-green-50 p-3 rounded-lg mb-3">
+                        <p class="text-sm font-semibold text-green-900 mb-1">Ventaja Estratégica:</p>
+                        <p class="text-xs text-green-800">Puerto profundo para buques de 300,000 dwt (~2M barriles)</p>
+                    </div>
+                    <div class="text-sm space-y-1">
+                        <p><strong>Ubicación:</strong> Río Negro, Patagonia</p>
+                        <p><strong>Sistema:</strong> Monobuoy en aguas profundas</p>
+                        <p><strong>Calidad:</strong> Calefacción y aislamiento para crudo</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- LNG EXPORT PROJECTS -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">❄️ PROYECTOS DE GNL (EXPORTACIÓN)</h2>
+                <p class="text-blue-100 text-sm">Gas Natural Licuado desde Vaca Muerta</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Argentina LNG Phase 1 -->
+                <div class="info-card">
+                    <div class="bg-green-50 px-3 py-1 rounded-full inline-block mb-3">
+                        <span class="text-xs font-bold text-green-700">FID APROBADO</span>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-2">Argentina LNG - Fase 1</h3>
+                    <div class="space-y-3 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Capacidad:</span>
+                            <span class="font-bold">5.95 mtpa</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Operador:</span>
+                            <span class="font-bold">Harbour Energy</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inicio:</span>
+                            <span class="font-bold text-green-600">2027-2028</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600"><strong>Buques FLNG:</strong> Hilli Episeyo + MK II</p>
+                </div>
+
+                <!-- Argentina LNG Phase 3 -->
+                <div class="info-card">
+                    <div class="bg-blue-50 px-3 py-1 rounded-full inline-block mb-3">
+                        <span class="text-xs font-bold text-blue-700">EN DESARROLLO</span>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-2">Argentina LNG - Fase 3</h3>
+                    <div class="space-y-3 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Capacidad:</span>
+                            <span class="font-bold">12 mtpa</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Socios:</span>
+                            <span class="font-bold">YPF · Eni · XRG</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">FID Proyectado:</span>
+                            <span class="font-bold text-orange-600">Mid-2026</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Financiamiento:</span>
+                            <span class="font-bold">$16B (JP Morgan)</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600"><strong>Inicio:</strong> 2030-2031 · 2 unidades FLNG</p>
+                </div>
+
+                <!-- Argentina LNG Phase 2 -->
+                <div class="info-card" style="opacity: 0.6;">
+                    <div class="bg-red-50 px-3 py-1 rounded-full inline-block mb-3">
+                        <span class="text-xs font-bold text-red-700">REDUCIDO</span>
+                    </div>
+                    <h3 class="text-xl font-black text-gray-900 mb-2">Argentina LNG - Fase 2</h3>
+                    <div class="space-y-3 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Capacidad Original:</span>
+                            <span class="font-bold">12 mtpa</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Reducida a:</span>
+                            <span class="font-bold">6 mtpa</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Shell:</span>
+                            <span class="font-bold text-red-600">Se retiró</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600">YPF busca nuevo socio (posibles: Saudi Aramco, ExxonMobil)</p>
+                </div>
+
+            </div>
+
+            <div class="mt-6 bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+                <p class="text-sm text-blue-900">
+                    <strong>📍 Ubicación común:</strong> Golfo San Matías, ~35 km offshore Las Grutas, Río Negro
+                </p>
+            </div>
+        </div>
+
+        <!-- SERVICIOS Y CONTRATISTAS -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">⚙️ SERVICIOS Y CONTRATISTAS</h2>
+                <p class="text-blue-100 text-sm">Perforación, fracturación, cementación y servicios petroleros</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">Weatherford</h3>
+                        <span class="stat-badge badge-services">Fracturación</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Líder en fracturación hidráulica y cementación</p>
+                </div>
+
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">Schlumberger</h3>
+                        <span class="stat-badge badge-services">Fracturación</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Servicios integrados de perforación y completación</p>
+                </div>
+
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">San Antonio Int'l</h3>
+                        <span class="stat-badge badge-services">Perforación</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Walking rigs especializados en pad drilling para YPF y Vista</p>
+                </div>
+
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">CYC</h3>
+                        <span class="stat-badge badge-services">Equipos</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Proveedora nacional de equipos de perforación</p>
+                </div>
+
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">Harris</h3>
+                        <span class="stat-badge badge-services">Equipos</span>
+                    </div>
+                    <p class="text-sm text-gray-600">Equipos de perforación y servicios logísticos</p>
+                </div>
+
+                <div class="company-card independent">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-black">Técnicas Reunidas</h3>
+                        <span class="stat-badge badge-services">Ingeniería</span>
+                    </div>
+                    <p class="text-sm text-gray-600">$440M contrato VMOS (ingeniería y project management)</p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- REFINACIÓN -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">🏭 REFINACIÓN</h2>
+                <p class="text-blue-100 text-sm">Refinerías operativas en Argentina</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <div class="info-card">
+                    <h3 class="text-xl font-black text-gray-900 mb-3">Refinería La Plata</h3>
+                    <div class="space-y-2 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Operador:</span>
+                            <span class="font-bold">YPF</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Capacidad:</span>
+                            <span class="font-bold">~190,000 bpd</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Inauguración:</span>
+                            <span class="font-bold">1925</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600">Mayor refinería de Argentina. Modernizada por Técnicas Reunidas.</p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="text-xl font-black text-gray-900 mb-3">Refinería Luján de Cuyo</h3>
+                    <div class="space-y-2 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Operador:</span>
+                            <span class="font-bold">YPF</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Ubicación:</span>
+                            <span class="font-bold">Mendoza</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Estado:</span>
+                            <span class="font-bold text-green-600">Modernizada</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-600">Optimización por Técnicas Reunidas (upgrade reciente)</p>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="text-xl font-black text-gray-900 mb-3">Otras Refinerías</h3>
+                    <div class="space-y-2 text-sm">
+                        <p><strong>Shell CAPSA</strong> - Dock Sud, Buenos Aires</p>
+                        <p><strong>Refinor</strong> - Salta (YPF - Pluspetrol)</p>
+                        <p><strong>Refinería Campana</strong> - Buenos Aires</p>
+                    </div>
+                </div>
+
+                <div class="info-card bg-orange-50">
+                    <h3 class="text-lg font-bold text-orange-900 mb-3">Uso de Capacidad</h3>
+                    <div class="text-center">
+                        <p class="text-5xl font-black text-orange-600 mb-2">82.2%</p>
+                        <p class="text-sm text-orange-800">Refinación de Petróleo (Oct 2025)</p>
+                        <p class="text-xs text-orange-700 mt-2">Mayor uso de capacidad del sector industrial</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- BANCOS Y FINANCIAMIENTO -->
+        <div class="mb-8">
+            <div class="category-header">
+                <h2 class="text-2xl font-black">💰 FINANCIAMIENTO</h2>
+                <p class="text-blue-100 text-sm">Bancos y entidades financieras del sector</p>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="info-card text-center">
+                    <div class="text-3xl mb-2">🏦</div>
+                    <p class="font-bold text-gray-900">Citi</p>
+                    <p class="text-xs text-gray-600">VMOS Lead</p>
+                </div>
+                <div class="info-card text-center">
+                    <div class="text-3xl mb-2">🏦</div>
+                    <p class="font-bold text-gray-900">JP Morgan</p>
+                    <p class="text-xs text-gray-600">Argentina LNG</p>
+                </div>
+                <div class="info-card text-center">
+                    <div class="text-3xl mb-2">🏦</div>
+                    <p class="font-bold text-gray-900">Deutsche Bank</p>
+                    <p class="text-xs text-gray-600">VMOS</p>
+                </div>
+                <div class="info-card text-center">
+                    <div class="text-3xl mb-2">🏦</div>
+                    <p class="font-bold text-gray-900">Santander</p>
+                    <p class="text-xs text-gray-600">VMOS</p>
+                </div>
+                <div class="info-card text-center">
+                    <div class="text-3xl mb-2">🏦</div>
+                    <p class="font-bold text-gray-900">Itaú</p>
+                    <p class="text-xs text-gray-600">VMOS</p>
+                </div>
+            </div>
+
+            <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="info-card bg-green-50">
+                    <h3 class="text-lg font-bold text-green-900 mb-3">💵 VMOS Financing</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Monto conseguido:</span>
+                            <span class="font-bold text-green-700">$2.0B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Proyectado original:</span>
+                            <span>$1.7B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Bancos participantes:</span>
+                            <span class="font-bold">19 entidades</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-green-800 mt-3">Mayor préstamo comercial para infraestructura en la historia argentina</p>
+                </div>
+
+                <div class="info-card bg-blue-50">
+                    <h3 class="text-lg font-bold text-blue-900 mb-3">🔵 Argentina LNG Financing</h3>
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span>Objetivo Fase 3:</span>
+                            <span class="font-bold text-blue-700">$16B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Inversión total:</span>
+                            <span>$20B</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Estructurador:</span>
+                            <span class="font-bold">JP Morgan</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-blue-800 mt-3">Mayor project finance privado de la historia argentina si se concreta</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Wolf Argy</h3>
+                    <p class="text-sm text-blue-200">Consultoría Política y Económica<br>Análisis del sector energético argentino</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Fuentes</h3>
+                    <p class="text-sm text-blue-200">SPE Journal · Oil & Gas Journal<br>Shale24 · Trading Economics<br>YPF · Empresas del Sector</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Última Actualización</h3>
+                    <p class="text-sm text-blue-200">Febrero 2026<br>Datos de producción: Diciembre 2025</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
