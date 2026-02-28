@@ -1,0 +1,32 @@
+name: Auto-Update Inflation Data
+
+on:
+  schedule:
+    - cron: '0 9 * * *'      # Diario 9 AM
+    - cron: '0 16 * * 2'     # Martes 4 PM
+    - cron: '0 16 * * 4'     # Jueves 4 PM
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - run: pip install requests beautifulsoup4 lxml
+      
+      - run: |
+          python3 auto_update_system.py << EOF
+          1
+          EOF
+      
+      - run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "actions@github.com"
+          git add *.html inflation_data.json
+          git diff --quiet || git commit -m "🤖 Auto-update $(date)"
+          git push
