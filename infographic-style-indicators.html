@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf Argy - Indicadores Económicos Argentina</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif;
+            background: #f0f4f8;
+        }
+        
+        .infographic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+        }
+        
+        .info-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px 12px 0 0;
+            margin: -24px -24px 20px -24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header.blue {
+            background: linear-gradient(135deg, #0066cc 0%, #004c99 100%);
+        }
+        
+        .card-header.navy {
+            background: linear-gradient(135deg, #001f3f 0%, #000d1a 100%);
+        }
+        
+        .card-header.cyan {
+            background: linear-gradient(135deg, #00b8d4 0%, #0097a7 100%);
+        }
+        
+        .stat-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 900;
+            color: white;
+            position: relative;
+        }
+        
+        .stat-circle.blue { background: linear-gradient(135deg, #0066cc, #004c99); }
+        .stat-circle.cyan { background: linear-gradient(135deg, #00b8d4, #0097a7); }
+        .stat-circle.navy { background: linear-gradient(135deg, #001f3f, #000d1a); }
+        .stat-circle.gray { background: linear-gradient(135deg, #78909c, #546e7a); }
+        
+        .mini-chart {
+            height: 120px;
+            margin: 16px 0;
+        }
+        
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .data-row:last-child {
+            border-bottom: none;
+        }
+        
+        .quote-icon {
+            font-size: 48px;
+            color: #0066cc;
+            opacity: 0.2;
+            line-height: 1;
+        }
+        
+        .logo-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #0066cc;
+        }
+        
+        .chart-container-small {
+            position: relative;
+            height: 180px;
+        }
+        
+        .icon-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0066cc, #004c99);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 16px;
+        }
+        
+        .percentage-big {
+            font-size: 72px;
+            font-weight: 900;
+            line-height: 1;
+            color: #0066cc;
+        }
+        
+        .trend-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #0066cc 0%, #00b8d4 100%);
+            margin: 16px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="max-w-7xl mx-auto px-4 py-8">
+        
+        <!-- Header -->
+        <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl p-8 mb-8 shadow-xl">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-4xl font-black mb-2">INDICADORES ECONÓMICOS</h1>
+                    <p class="text-xl text-blue-200">Argentina - Febrero 2026</p>
+                </div>
+                <div class="text-right">
+                    <div class="text-6xl font-black mb-2">32.4<span class="text-3xl">%</span></div>
+                    <p class="text-blue-200">Inflación Anual</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Infographic Grid -->
+        <div class="infographic-grid">
+            
+            <!-- Card 1: Main Stats with Circle -->
+            <div class="info-card">
+                <div class="card-header blue">
+                    <h2 class="font-bold text-lg">Inflación Actual</h2>
+                    <div class="logo-circle">WA</div>
+                </div>
+                
+                <div class="flex justify-center mb-6">
+                    <div class="stat-circle blue">
+                        32.4%
+                    </div>
+                </div>
+                
+                <div class="text-center mb-6">
+                    <p class="text-gray-600 text-sm mb-2">Variación Anual</p>
+                    <p class="text-2xl font-bold text-gray-900">+0.9pp</p>
+                    <p class="text-sm text-gray-500">vs mes anterior</p>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="text-center p-3 bg-blue-50 rounded-lg">
+                        <p class="text-xs text-gray-600 mb-1">Mensual</p>
+                        <p class="text-xl font-bold text-blue-600">2.9%</p>
+                    </div>
+                    <div class="text-center p-3 bg-cyan-50 rounded-lg">
+                        <p class="text-xs text-gray-600 mb-1">Pico</p>
+                        <p class="text-xl font-bold text-cyan-600">289%</p>
+                    </div>
+                    <div class="text-center p-3 bg-gray-50 rounded-lg">
+                        <p class="text-xs text-gray-600 mb-1">Recup.</p>
+                        <p class="text-xl font-bold text-gray-700">89%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Quote & Trend -->
+            <div class="info-card">
+                <div class="card-header cyan">
+                    <h2 class="font-bold text-lg">Análisis Clave</h2>
+                    <div class="logo-circle">📊</div>
+                </div>
+                
+                <div class="mb-4">
+                    <div class="quote-icon">"</div>
+                    <p class="text-gray-700 text-sm leading-relaxed mb-4">
+                        La inflación aceleró por <strong>quinto mes consecutivo</strong>, alcanzando 32.4% anual en enero 2026. Los alimentos subieron 4.7%, el mayor aumento desde marzo 2025.
+                    </p>
+                </div>
+                
+                <div class="chart-container-small">
+                    <canvas id="trendChart1"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-3 mt-4">
+                    <div class="bg-red-50 p-3 rounded-lg">
+                        <p class="text-xs text-gray-600">Alimentos</p>
+                        <p class="text-2xl font-bold text-red-600">4.7%</p>
+                    </div>
+                    <div class="bg-blue-50 p-3 rounded-lg">
+                        <p class="text-xs text-gray-600">Servicios</p>
+                        <p class="text-2xl font-bold text-blue-600">3.0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Map & Stats -->
+            <div class="info-card">
+                <div class="card-header navy">
+                    <h2 class="font-bold text-lg">Distribución Regional</h2>
+                    <div class="logo-circle">🗺️</div>
+                </div>
+                
+                <div class="icon-badge mb-4">🇦🇷</div>
+                
+                <div class="space-y-3">
+                    <div class="data-row">
+                        <span class="font-semibold text-gray-700">Gran Buenos Aires</span>
+                        <span class="font-bold text-blue-600">33.2%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="font-semibold text-gray-700">CABA</span>
+                        <span class="font-bold text-cyan-600">31.8%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="font-semibold text-gray-700">Región Centro</span>
+                        <span class="font-bold text-gray-700">32.6%</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="font-semibold text-gray-700">Patagonia</span>
+                        <span class="font-bold text-blue-700">32.9%</span>
+                    </div>
+                </div>
+                
+                <div class="mt-6 text-center">
+                    <div class="percentage-big">32.4</div>
+                    <p class="text-sm text-gray-600">Promedio Nacional</p>
+                </div>
+            </div>
+
+            <!-- Card 4: Circular Stats -->
+            <div class="info-card">
+                <div class="card-header blue">
+                    <h2 class="font-bold text-lg">Seguimiento Semanal</h2>
+                    <div class="logo-circle">📅</div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="flex flex-col items-center">
+                        <div class="stat-circle blue mb-2">
+                            2.5%
+                        </div>
+                        <p class="text-xs text-gray-600 text-center">Semana 1<br>Feb 1-7</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="stat-circle cyan mb-2">
+                            1.0%
+                        </div>
+                        <p class="text-xs text-gray-600 text-center">Semana 2<br>Feb 8-14</p>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="flex flex-col items-center">
+                        <div class="stat-circle navy mb-2">
+                            0.5%
+                        </div>
+                        <p class="text-xs text-gray-600 text-center">Semana 3<br>Feb 15-21</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="stat-circle gray mb-2">
+                            3.4%
+                        </div>
+                        <p class="text-xs text-gray-600 text-center">Promedio<br>4 Semanas</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5: Globe & International -->
+            <div class="info-card">
+                <div class="card-header navy">
+                    <h2 class="font-bold text-lg">Comparación Regional</h2>
+                    <div class="logo-circle">🌎</div>
+                </div>
+                
+                <div class="icon-badge mb-4">🌐</div>
+                
+                <div class="quote-icon mb-2">"</div>
+                <p class="text-sm text-gray-700 mb-6">
+                    Argentina mantiene la <strong>inflación más alta</strong> de la región, pero muestra una fuerte recuperación desde el pico de 289% en 2024.
+                </p>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                        <span class="font-semibold">🇦🇷 Argentina</span>
+                        <span class="text-2xl font-bold text-red-600">32.4%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-lg">
+                        <span class="font-semibold">🇻🇪 Venezuela</span>
+                        <span class="text-xl font-bold text-orange-600">25.7%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                        <span class="font-semibold">🇧🇷 Brasil</span>
+                        <span class="text-xl font-bold text-blue-600">4.8%</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg">
+                        <span class="font-semibold">🇨🇱 Chile</span>
+                        <span class="text-xl font-bold text-green-600">3.9%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6: Detailed Chart -->
+            <div class="info-card">
+                <div class="card-header cyan">
+                    <h2 class="font-bold text-lg">Proyección 2026</h2>
+                    <div class="logo-circle">📈</div>
+                </div>
+                
+                <div class="chart-container-small mb-4">
+                    <canvas id="projectionChart"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="text-center p-2 bg-purple-50 rounded">
+                        <p class="text-xs text-gray-600">Feb</p>
+                        <p class="text-lg font-bold text-purple-600">30.5%</p>
+                    </div>
+                    <div class="text-center p-2 bg-blue-50 rounded">
+                        <p class="text-xs text-gray-600">Mar</p>
+                        <p class="text-lg font-bold text-blue-600">28.8%</p>
+                    </div>
+                    <div class="text-center p-2 bg-green-50 rounded">
+                        <p class="text-xs text-gray-600">Abr</p>
+                        <p class="text-lg font-bold text-green-600">27.2%</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 p-3 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-lg">
+                    <p class="text-xs text-gray-600 mb-1">Meta Anual 2026</p>
+                    <p class="text-3xl font-bold text-blue-700">22.4%</p>
+                </div>
+            </div>
+
+            <!-- Card 7: Sources -->
+            <div class="info-card">
+                <div class="card-header blue">
+                    <h2 class="font-bold text-lg">Fuentes de Datos</h2>
+                    <div class="logo-circle">📋</div>
+                </div>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center p-3 bg-blue-50 rounded-lg">
+                        <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-3">IN</div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-900">INDEC</p>
+                            <p class="text-xs text-gray-600">Oficial</p>
+                        </div>
+                        <p class="text-xl font-bold text-blue-600">2.9%</p>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-green-50 rounded-lg">
+                        <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mr-3">EC</div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-900">Ecolatina</p>
+                            <p class="text-xs text-gray-600">Privada</p>
+                        </div>
+                        <p class="text-xl font-bold text-green-600">2.9%</p>
+                    </div>
+                    
+                    <div class="flex items-center p-3 bg-purple-50 rounded-lg">
+                        <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-3">LG</div>
+                        <div class="flex-1">
+                            <p class="font-bold text-gray-900">LCG</p>
+                            <p class="text-xs text-gray-600">Consultoría</p>
+                        </div>
+                        <p class="text-xl font-bold text-purple-600">2.8%</p>
+                    </div>
+                </div>
+                
+                <div class="mt-6 p-4 bg-gradient-to-r from-blue-900 to-blue-700 rounded-lg text-white text-center">
+                    <p class="text-sm mb-1">Convergencia</p>
+                    <p class="text-3xl font-bold">98%</p>
+                    <p class="text-xs text-blue-200">±0.2% entre fuentes</p>
+                </div>
+            </div>
+
+            <!-- Card 8: Historical -->
+            <div class="info-card">
+                <div class="card-header navy">
+                    <h2 class="font-bold text-lg">Evolución Histórica</h2>
+                    <div class="logo-circle">📊</div>
+                </div>
+                
+                <div class="chart-container-small mb-4">
+                    <canvas id="historicalChart"></canvas>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4 mt-4">
+                    <div class="text-center p-4 bg-gradient-to-br from-red-500 to-red-600 rounded-lg text-white">
+                        <p class="text-xs mb-1">Pico Crisis</p>
+                        <p class="text-4xl font-black">289%</p>
+                        <p class="text-xs mt-1">Abril 2024</p>
+                    </div>
+                    <div class="text-center p-4 bg-gradient-to-br from-green-500 to-green-600 rounded-lg text-white">
+                        <p class="text-xs mb-1">Actual</p>
+                        <p class="text-4xl font-black">32.4%</p>
+                        <p class="text-xs mt-1">Enero 2026</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <p class="text-sm text-gray-600">Recuperación</p>
+                    <p class="text-5xl font-black text-blue-700">89%</p>
+                </div>
+            </div>
+
+            <!-- Card 9: Key Insights -->
+            <div class="info-card">
+                <div class="card-header cyan">
+                    <h2 class="font-bold text-lg">Puntos Clave</h2>
+                    <div class="logo-circle">💡</div>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">1</div>
+                        <div>
+                            <p class="font-bold text-gray-900 mb-1">Aceleración Continua</p>
+                            <p class="text-sm text-gray-600">Quinto mes consecutivo de aumento en la tasa mensual</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">2</div>
+                        <div>
+                            <p class="font-bold text-gray-900 mb-1">Alimentos Lideran</p>
+                            <p class="text-sm text-gray-600">Carnes subieron 5.3% en febrero, impulsando la inflación</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">3</div>
+                        <div>
+                            <p class="font-bold text-gray-900 mb-1">Meta Desafiante</p>
+                            <p class="text-sm text-gray-600">Gobierno busca bajar a menos del 1% mensual para agosto</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white font-bold mr-3 flex-shrink-0">4</div>
+                        <div>
+                            <p class="font-bold text-gray-900 mb-1">Convergencia de Datos</p>
+                            <p class="text-sm text-gray-600">Fuentes oficiales y privadas coinciden en ±0.2%</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 bg-gradient-to-r from-gray-900 to-gray-800 text-white rounded-2xl p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Wolf Argy</h3>
+                    <p class="text-sm text-gray-300">Consultoría Política y Económica</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Fuentes</h3>
+                    <p class="text-sm text-gray-300">INDEC • Ecolatina • LCG<br>Trading Economics • Banco Mundial</p>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">Actualizado</h3>
+                    <p class="text-sm text-gray-300">Enero 2026<br>Próxima: 12 Marzo 2026</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chart 1: Trend
+        new Chart(document.getElementById('trendChart1'), {
+            type: 'line',
+            data: {
+                labels: ['Ago', 'Sep', 'Oct', 'Nov', 'Dic', 'Ene'],
+                datasets: [{
+                    data: [33.8, 32.5, 31.2, 31.4, 31.5, 32.4],
+                    borderColor: '#0066cc',
+                    backgroundColor: 'rgba(0, 102, 204, 0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false },
+                    x: { display: true, grid: { display: false } }
+                }
+            }
+        });
+
+        // Chart 2: Projection
+        new Chart(document.getElementById('projectionChart'), {
+            type: 'line',
+            data: {
+                labels: ['Oct', 'Nov', 'Dic', 'Ene', 'Feb', 'Mar', 'Abr'],
+                datasets: [{
+                    label: 'Histórico',
+                    data: [31.2, 31.4, 31.5, 32.4, null, null, null],
+                    borderColor: '#0066cc',
+                    borderWidth: 3
+                }, {
+                    label: 'Proyección',
+                    data: [null, null, null, 32.4, 30.5, 28.8, 27.2],
+                    borderColor: '#00b8d4',
+                    borderWidth: 3,
+                    borderDash: [5, 5]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false },
+                    x: { display: true, grid: { display: false } }
+                }
+            }
+        });
+
+        // Chart 3: Historical
+        new Chart(document.getElementById('historicalChart'), {
+            type: 'bar',
+            data: {
+                labels: ['2021', '2022', '2023', '2024', '2025', '2026'],
+                datasets: [{
+                    data: [50.9, 94.8, 211.4, 117.8, 31.5, 32.4],
+                    backgroundColor: ['#546e7a', '#ef5350', '#e53935', '#f57c00', '#66bb6a', '#0066cc']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { display: false },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
