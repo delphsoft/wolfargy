@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolf Argy - Indicadores Económicos Argentina</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Todo el contenido en UNA SOLA PÁGINA -->
+    <div id="app"></div>
+
+    <script>
+        // DATOS
+        const pages = {
+            home: {
+                title: "🇦🇷 Wolf Argy - Indicadores Económicos",
+                content: `
+                    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl p-12 mb-8">
+                        <h1 class="text-6xl font-black mb-4">Indicadores Económicos Argentina</h1>
+                        <p class="text-2xl text-blue-100">Análisis completo · Marzo 2026</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        ${createCard('inflacion', '📊', 'Inflación', '32.4%', 'Indicadores mensuales, anuales y proyecciones')}
+                        ${createCard('industrial', '🏭', 'Producción Industrial', '-8.7%', 'EMI y uso de capacidad instalada')}
+                        ${createCard('petroleo', '⛽', 'Industria Petrolera', '30+', 'Mapa completo de empresas del sector')}
+                        ${createCard('semanal', '📅', 'Seguimiento Semanal', '3.4%', 'Inflación semana a semana')}
+                        ${createCard('proyecciones', '🔮', 'Proyecciones 2026', '22.4%', 'Estimaciones a 6 meses')}
+                        ${createCard('infografia', '📈', 'Vista Infográfica', '9', 'Dashboard modular ejecutivo')}
+                    </div>
+                `
+            },
+            
+            inflacion: {
+                title: "📊 Inflación Argentina",
+                content: `
+                    <div class="bg-gradient-to-r from-red-900 to-red-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Inflación Argentina</h1>
+                        <p class="text-xl text-red-100">Enero 2026 · IPC Mensual y Anual</p>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Inflación Anual</div>
+                            <div class="text-5xl font-black text-red-600">32.4%</div>
+                            <div class="text-sm text-gray-500 mt-2">Enero 2026</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Mensual</div>
+                            <div class="text-5xl font-black text-orange-600">2.9%</div>
+                            <div class="text-sm text-gray-500 mt-2">Enero 2026</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Pico 2024</div>
+                            <div class="text-5xl font-black text-red-700">289%</div>
+                            <div class="text-sm text-gray-500 mt-2">Diciembre 2023</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Tendencia</div>
+                            <div class="text-3xl font-black text-yellow-600">Acelerando</div>
+                            <div class="text-sm text-gray-500 mt-2">vs Diciembre</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                        <h2 class="text-2xl font-bold mb-6">Inflación por Categorías (Enero 2026)</h2>
+                        <div class="space-y-4">
+                            ${createBar('Alimentos y Bebidas', 4.7, 'red')}
+                            ${createBar('Vivienda y Servicios', 3.0, 'blue')}
+                            ${createBar('Transporte', 1.8, 'green')}
+                            ${createBar('Salud', 2.4, 'purple')}
+                            ${createBar('Educación', 1.9, 'yellow')}
+                        </div>
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            },
+
+            industrial: {
+                title: "🏭 Producción Industrial",
+                content: `
+                    <div class="bg-gradient-to-r from-orange-900 to-orange-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Producción Industrial</h1>
+                        <p class="text-xl text-orange-100">Noviembre 2025 · EMI</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Producción</div>
+                            <div class="text-5xl font-black text-red-600">-8.7%</div>
+                            <div class="text-sm text-gray-500 mt-2">Interanual</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Uso Capacidad</div>
+                            <div class="text-5xl font-black text-orange-600">61.0%</div>
+                            <div class="text-sm text-gray-500 mt-2">Octubre 2025</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Construcción</div>
+                            <div class="text-5xl font-black text-green-600">+8.0%</div>
+                            <div class="text-sm text-gray-500 mt-2">Interanual</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Acum. 2025</div>
+                            <div class="text-5xl font-black text-blue-600">+3.1%</div>
+                            <div class="text-sm text-gray-500 mt-2">Ene-Oct</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                        <h2 class="text-2xl font-bold mb-6 text-red-900">🔴 Sectores con Mayor Caída</h2>
+                        <div class="space-y-4">
+                            ${createBar('Textiles', -36.7, 'red')}
+                            ${createBar('Vehículos y Autopartes', -23.0, 'red')}
+                            ${createBar('Productos Metálicos', -18.6, 'orange')}
+                            ${createBar('Maquinaria y Equipo', -17.9, 'orange')}
+                            ${createBar('Indumentaria', -17.6, 'orange')}
+                        </div>
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            },
+
+            petroleo: {
+                title: "⛽ Industria Petrolera",
+                content: `
+                    <div class="bg-gradient-to-r from-green-900 to-green-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Industria Petrolera Argentina</h1>
+                        <p class="text-xl text-green-100">Vaca Muerta · 30+ Empresas · 2026</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Vaca Muerta</div>
+                            <div class="text-4xl font-black text-blue-600">450K</div>
+                            <div class="text-sm text-gray-500 mt-2">barriles/día</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Inversión 2025</div>
+                            <div class="text-4xl font-black text-green-600">$11.2B</div>
+                            <div class="text-sm text-gray-500 mt-2">63% Neuquén</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Pozos 2025</div>
+                            <div class="text-4xl font-black text-orange-600">1,075</div>
+                            <div class="text-sm text-gray-500 mt-2">+538 vs 2024</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="text-sm text-gray-600 mb-2">Exportación</div>
+                            <div class="text-4xl font-black text-purple-600">257K</div>
+                            <div class="text-sm text-gray-500 mt-2">barriles/día</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                        <h2 class="text-2xl font-bold mb-6">Principales Empresas</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${createCompanyCard('YPF', '61,114 m³/día', '44.3%', '$4.6B')}
+                            ${createCompanyCard('PAE (BP+Bridas)', '16,815 m³/día', '12.2%', '$1.4B')}
+                            ${createCompanyCard('Vista Energy', '11,073 m³/día', '8.0%', '$1.2B')}
+                            ${createCompanyCard('Chevron', '3,631 m³/día', '2.6%', 'N/D')}
+                            ${createCompanyCard('Shell', '5,370 m³/día', '3.9%', 'N/D')}
+                            ${createCompanyCard('Pluspetrol', '6,315 m³/día', '4.6%', 'N/D')}
+                        </div>
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            },
+
+            semanal: {
+                title: "📅 Seguimiento Semanal",
+                content: `
+                    <div class="bg-gradient-to-r from-blue-900 to-blue-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Seguimiento Semanal</h1>
+                        <p class="text-xl text-blue-100">Febrero 2026 · Datos en Tiempo Real</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-red-500">
+                            <div class="text-xs font-bold text-red-600 mb-2">SEMANA 1 (Feb 1-7)</div>
+                            <div class="text-5xl font-black text-red-600">2.5%</div>
+                            <div class="text-sm text-gray-500 mt-2">Mayor desde marzo 2024</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-blue-500">
+                            <div class="text-xs font-bold text-blue-600 mb-2">SEMANA 2 (Feb 8-14)</div>
+                            <div class="text-5xl font-black text-blue-600">1.0%</div>
+                            <div class="text-sm text-gray-500 mt-2">Desaceleración</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-500">
+                            <div class="text-xs font-bold text-orange-600 mb-2">SEMANA 3 (Feb 15-21)</div>
+                            <div class="text-5xl font-black text-orange-600">0.5%</div>
+                            <div class="text-sm text-gray-500 mt-2">Confirmado</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 border-purple-500">
+                            <div class="text-xs font-bold text-purple-600 mb-2">PROMEDIO MENSUAL</div>
+                            <div class="text-5xl font-black text-purple-600">3.4%</div>
+                            <div class="text-sm text-gray-500 mt-2">4 semanas</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                        <h2 class="text-2xl font-bold mb-6">Proyecciones Consultoras - Febrero 2026</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            ${createProjectionCard('EcoGo', '3.0%')}
+                            ${createProjectionCard('Analytica', '2.8%')}
+                            ${createProjectionCard('LCG', '2.5%')}
+                            ${createProjectionCard('Equilibra', '2.3%')}
+                        </div>
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            },
+
+            proyecciones: {
+                title: "🔮 Proyecciones 2026",
+                content: `
+                    <div class="bg-gradient-to-r from-purple-900 to-blue-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Proyecciones 2026</h1>
+                        <p class="text-xl text-purple-100">Estimaciones · 3 Escenarios</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-6 shadow-lg border-2 border-green-200">
+                            <h3 class="text-xl font-black text-green-900 mb-4">📈 Optimista</h3>
+                            <div class="text-5xl font-black text-green-600 mb-4">18.5%</div>
+                            <ul class="text-sm space-y-2">
+                                <li>✓ Control fiscal sostenido</li>
+                                <li>✓ Ancla cambiaria efectiva</li>
+                                <li>✓ Sin shocks externos</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 shadow-lg border-4 border-blue-400">
+                            <h3 class="text-xl font-black text-blue-900 mb-4">🎯 Base</h3>
+                            <div class="text-5xl font-black text-blue-600 mb-4">22.4%</div>
+                            <ul class="text-sm space-y-2">
+                                <li>✓ Política actual continúa</li>
+                                <li>✓ Ajustes graduales</li>
+                                <li>✓ <strong>MÁS PROBABLE</strong></li>
+                            </ul>
+                        </div>
+                        <div class="bg-gradient-to-br from-red-50 to-orange-50 rounded-xl p-6 shadow-lg border-2 border-red-200">
+                            <h3 class="text-xl font-black text-red-900 mb-4">⚠️ Pesimista</h3>
+                            <div class="text-5xl font-black text-red-600 mb-4">28.7%</div>
+                            <ul class="text-sm space-y-2">
+                                <li>× Presión fiscal aumenta</li>
+                                <li>× Salto cambiario</li>
+                                <li>× Shocks externos</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
+                        <h2 class="text-2xl font-bold mb-6">Proyección Mensual</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
+                            ${createMonthCard('Febrero', '30.5%', 'purple')}
+                            ${createMonthCard('Marzo', '28.8%', 'indigo')}
+                            ${createMonthCard('Abril', '27.2%', 'blue')}
+                            ${createMonthCard('Mayo', '25.8%', 'cyan')}
+                            ${createMonthCard('Junio', '24.5%', 'green')}
+                            ${createMonthCard('Julio', '23.3%', 'emerald')}
+                        </div>
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            },
+
+            infografia: {
+                title: "📈 Vista Infográfica",
+                content: `
+                    <div class="bg-gradient-to-r from-purple-900 to-purple-700 text-white rounded-2xl p-8 mb-8">
+                        <h1 class="text-5xl font-black mb-2">Vista Infográfica</h1>
+                        <p class="text-xl text-purple-100">Dashboard Modular · 9 Tarjetas</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        ${createInfoCard('Inflación Actual', '32.4%', 'Anual', 'red')}
+                        ${createInfoCard('Producción', '-8.7%', 'Industrial', 'orange')}
+                        ${createInfoCard('Petróleo VM', '450K', 'bpd', 'green')}
+                        ${createInfoCard('Semanal', '3.4%', 'Promedio', 'blue')}
+                        ${createInfoCard('Proyección', '22.4%', 'Meta 2026', 'purple')}
+                        ${createInfoCard('Uso Capacidad', '61.0%', 'Octubre', 'yellow')}
+                    </div>
+
+                    <button onclick="navigateTo('home')" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-bold hover:bg-blue-700">
+                        ← Volver al Inicio
+                    </button>
+                `
+            }
+        };
+
+        // FUNCIONES HELPER
+        function createCard(page, icon, title, stat, desc) {
+            return `
+                <div onclick="navigateTo('${page}')" 
+                     class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-2xl transition-all cursor-pointer hover:-translate-y-2">
+                    <div class="text-6xl text-center mb-4">${icon}</div>
+                    <h3 class="text-2xl font-bold text-center mb-3">${title}</h3>
+                    <div class="text-5xl font-black text-center mb-4 text-blue-600">${stat}</div>
+                    <p class="text-gray-600 text-center mb-6">${desc}</p>
+                    <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold hover:bg-blue-700">
+                        Ver Detalles →
+                    </button>
+                </div>
+            `;
+        }
+
+        function createBar(label, value, color) {
+            const colors = {
+                red: 'bg-red-500',
+                blue: 'bg-blue-500',
+                green: 'bg-green-500',
+                purple: 'bg-purple-500',
+                yellow: 'bg-yellow-500',
+                orange: 'bg-orange-500'
+            };
+            const width = Math.abs(value) * 2;
+            return `
+                <div>
+                    <div class="flex justify-between mb-2">
+                        <span class="font-semibold">${label}</span>
+                        <span class="font-bold text-lg">${value}%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-3">
+                        <div class="${colors[color]} rounded-full h-3" style="width: ${width}%"></div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createCompanyCard(name, production, share, investment) {
+            return `
+                <div class="bg-gray-50 rounded-lg p-4">
+                    <h4 class="font-bold text-lg mb-2">${name}</h4>
+                    <div class="text-sm space-y-1">
+                        <p><span class="text-gray-600">Producción:</span> <strong>${production}</strong></p>
+                        <p><span class="text-gray-600">Participación:</span> <strong>${share}</strong></p>
+                        <p><span class="text-gray-600">Inversión:</span> <strong>${investment}</strong></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createProjectionCard(name, value) {
+            return `
+                <div class="bg-purple-50 rounded-lg p-4 text-center">
+                    <p class="text-sm font-semibold text-gray-700 mb-2">${name}</p>
+                    <p class="text-3xl font-black text-purple-600">${value}</p>
+                </div>
+            `;
+        }
+
+        function createMonthCard(month, value, color) {
+            return `
+                <div class="bg-${color}-50 rounded-lg p-4 text-center">
+                    <p class="text-xs font-bold text-${color}-600 mb-2">${month}</p>
+                    <p class="text-2xl font-black text-${color}-600">${value}</p>
+                </div>
+            `;
+        }
+
+        function createInfoCard(title, stat, subtitle, color) {
+            return `
+                <div class="bg-white rounded-xl p-6 shadow-lg">
+                    <h3 class="font-bold text-gray-700 mb-3">${title}</h3>
+                    <div class="text-5xl font-black text-${color}-600 mb-2">${stat}</div>
+                    <p class="text-sm text-gray-500">${subtitle}</p>
+                </div>
+            `;
+        }
+
+        // NAVEGACIÓN
+        function navigateTo(pageName) {
+            const page = pages[pageName];
+            if (!page) {
+                console.error('Página no encontrada:', pageName);
+                return;
+            }
+
+            document.getElementById('app').innerHTML = `
+                <div class="max-w-7xl mx-auto px-4 py-8">
+                    <div class="mb-4">
+                        <h1 class="text-2xl font-bold text-gray-600">${page.title}</h1>
+                    </div>
+                    ${page.content}
+                </div>
+            `;
+
+            window.scrollTo(0, 0);
+            console.log('✅ Navegado a:', pageName);
+        }
+
+        // INICIALIZAR
+        navigateTo('home');
+        console.log('✅ App cargada - Todo funciona en UNA SOLA página');
+        console.log('📊 Haz click en cualquier tarjeta para ver el contenido');
+    </script>
+
+</body>
+</html>
